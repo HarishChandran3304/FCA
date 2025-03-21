@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Chess.com Analysis Helper",
+  "version": "1.0",
+  "description": "Adds an analyze option to chess.com game pages",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "scripting",
+    "clipboardRead",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "https://www.chess.com/*",
+    "https://lichess.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.chess.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+} 
