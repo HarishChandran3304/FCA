@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.chess-analysis-button {
+  position: fixed;
+  bottom: 17px;
+  right: 7px;
+  background-color: #80B64B;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  z-index: 9999;
+  box-shadow: 0 4px 0 #2c4c0b, 0 6px 10px #2c4c0b;
+  transition: all 0.3s;
+}
+
+.chess-analysis-button:hover {
+  background-color: #619929;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #2c4c0b, 0 4px 8px #2c4c0b;
+}

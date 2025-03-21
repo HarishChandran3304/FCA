@@ -2,9 +2,8 @@
   "manifest_version": 3,
   "name": "Chess.com Analysis Helper",
   "version": "1.0",
-  "description": "Adds an analyze option to chess.com game pages",
+  "description": "Adds an analyze button to chess.com game pages",
   "permissions": [
-    "contextMenus",
     "activeTab",
     "scripting",
     "clipboardRead",
@@ -20,7 +19,8 @@
   "content_scripts": [
     {
       "matches": ["https://www.chess.com/*"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "css": ["styles.css"]
     }
   ]
 } 
