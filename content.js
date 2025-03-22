@@ -73,10 +73,22 @@ function triggerShareButton() {
           const copyButton = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > div > section > div > div:nth-child(2) > div.share-menu-tab-pgn-pgn-wrapper > button > span');
           if (copyButton) {
             copyButton.click();
-            // Wait for clipboard to be updated, then open Lichess in new tab
+            // Wait for clipboard to be updated, then close the modal and open Lichess
             setTimeout(() => {
-              // Open Lichess analysis in new tab
-              window.open('https://lichess.org/analysis', '_blank');
+              // Close the share modal popup
+              const closeButton = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > button > div');
+              if (closeButton) {
+                closeButton.click();
+                // Wait a moment for the modal to close, then open Lichess
+                setTimeout(() => {
+                  // Open Lichess analysis in new tab
+                  window.open('https://lichess.org/analysis', '_blank');
+                }, 300);
+              } else {
+                console.log('Close button not found');
+                // Fallback: open Lichess even if we couldn't close the modal
+                window.open('https://lichess.org/analysis', '_blank');
+              }
             }, 500);
           } else {
             console.log('Copy button not found');
