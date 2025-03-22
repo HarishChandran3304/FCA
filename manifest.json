@@ -1,8 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Chess.com Analysis Helper",
+  "name": "Free chess.com Analysis",
   "version": "1.0",
-  "description": "Adds an analyze button to chess.com game pages",
+  "description": "Analyze chess.com games for free with just one click!",
+  "icons": {
+    "128": "icons/logo.png"
+  },
   "permissions": [
     "activeTab",
     "scripting",
