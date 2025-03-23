@@ -68,30 +68,28 @@ function triggerShareButton() {
       const firstTab = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > div > header > div.share-menu-tab-selector-component > div:nth-child(1)');
       if (firstTab) {
         firstTab.click();
-        // Wait for the PGN content to load and then click the copy button
+        // Wait for the PGN content to load
         setTimeout(() => {
-          const copyButton = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > div > section > div > div:nth-child(2) > div.share-menu-tab-pgn-pgn-wrapper > button > span');
-          if (copyButton) {
-            copyButton.click();
-            // Wait for clipboard to be updated, then close the modal and open Lichess
-            setTimeout(() => {
-              // Close the share modal popup
-              const closeButton = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > button > div');
-              if (closeButton) {
-                closeButton.click();
-                // Wait a moment for the modal to close, then open Lichess
-                setTimeout(() => {
-                  // Open Lichess analysis in new tab
-                  window.open('https://lichess.org/analysis', '_blank');
-                }, 300);
-              } else {
-                console.log('Close button not found');
-                // Fallback: open Lichess even if we couldn't close the modal
-                window.open('https://lichess.org/analysis', '_blank');
-              }
-            }, 500);
+          // Get the PGN text from the textarea
+          const pgnText = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > div > section > div > div:nth-child(2) > div.share-menu-tab-pgn-pgn-wrapper > textarea');
+          if (pgnText) {
+            // Get the PGN and open Lichess
+            const pgn = encodeURIComponent(pgnText.value);
+            // Open the URL and notify the background script to inject code
+            const lichessURL = `https://lichess.org/paste?pgn=${pgn}`;
+            // Store the URL in localStorage so the background script can find it
+            localStorage.setItem('lichessAnalysisURL', lichessURL);
+            
+            // Close the share modal before opening Lichess
+            const closeButton = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > button > div');
+            if (closeButton) {
+              closeButton.click();
+            }
+            
+            // Open the URL in a new tab
+            chrome.runtime.sendMessage({ action: 'openLichessWithPGN', url: lichessURL });
           } else {
-            console.log('Copy button not found');
+            console.log('PGN text not found');
           }
         }, 500); // Wait 500ms for the PGN content to load
       } else {

@@ -9,8 +9,8 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "clipboardRead",
-    "webNavigation"
+    "webNavigation",
+    "tabs"
   ],
   "host_permissions": [
     "https://www.chess.com/*",
