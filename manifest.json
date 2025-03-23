@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "FCA: Free chess.com Analysis",
+  "name": "FCA: Free Chess.com Analysis",
   "version": "1.0",
   "description": "Analyze chess.com games for free with just one click!",
   "icons": {
