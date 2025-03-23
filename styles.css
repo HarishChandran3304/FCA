@@ -23,3 +23,29 @@
   transform: translateY(2px);
   box-shadow: 0 2px 0 #2c4c0b, 0 4px 8px #2c4c0b;
 }
+
+.lichess-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #80B64B;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  z-index: 10000;
+  font-family: 'Segoe UI', 'Helvetica Neue', 'Noto Sans', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  max-width: 320px;
+  transform: translateX(-110%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lichess-toast.show {
+  transform: translateX(0);
+}
+
+.lichess-toast.hide {
+  transform: translateX(-110%);
+}
