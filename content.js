@@ -40,6 +40,34 @@ function findShareButton() {
 // Run the function when the page loads
 findShareButton();
 
+// Function to create and manage the progress indicator
+function createProgressIndicator() {
+  const progress = document.createElement('div');
+  progress.className = 'chess-analysis-progress';
+  progress.innerHTML = `
+    <span class="progress-text">Preparing analysis...</span>
+    <span class="progress-spinner"></span>
+  `;
+  document.body.appendChild(progress);
+  return progress;
+}
+
+// Function to update progress text
+function updateProgress(progress, text, isError = false) {
+  progress.querySelector('.progress-text').textContent = text;
+  progress.classList.remove('success', 'error');
+  if (isError) {
+    progress.classList.add('error');
+    progress.querySelector('.progress-spinner').style.display = 'none';
+  }
+}
+
+// Function to show success state
+function showSuccess(progress) {
+  progress.classList.add('success');
+  progress.querySelector('.progress-spinner').style.display = 'none';
+}
+
 // Function to create and add the analyze button
 function addAnalyzeButton() {
   // Check if we're on a game page by looking for the share button
@@ -59,20 +87,29 @@ function addAnalyzeButton() {
 
 // Function to trigger the share button and analysis process
 function triggerShareButton() {
+  const progress = createProgressIndicator();
+  progress.classList.add('show');
+  
   // Find and click the share button using the specific selector
   const shareButton = document.querySelector('#board-layout-sidebar > div.sidebar-component > div.live-game-buttons-component > button.icon-font-chess.share.live-game-buttons-button');
+  
   if (shareButton) {
+    updateProgress(progress, 'Opening share menu...');
     shareButton.click();
+    
     // Wait for the modal to appear and then click the first tab
     setTimeout(() => {
       const firstTab = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > div > header > div.share-menu-tab-selector-component > div:nth-child(1)');
       if (firstTab) {
+        updateProgress(progress, 'Extracting game data...');
         firstTab.click();
+        
         // Wait for the PGN content to load
         setTimeout(() => {
           // Get the PGN text from the textarea
           const pgnText = document.querySelector('#share-modal > div > div.cc-modal-body.cc-modal-lg > div > section > div > div:nth-child(2) > div.share-menu-tab-pgn-pgn-wrapper > textarea');
           if (pgnText) {
+            updateProgress(progress, 'Opening Lichess analysis...');
             // Get the PGN and open Lichess
             const pgn = encodeURIComponent(pgnText.value);
             // Open the URL and notify the background script to inject code
@@ -86,18 +123,36 @@ function triggerShareButton() {
               closeButton.click();
             }
             
+            // Show success state briefly before opening Lichess
+            showSuccess(progress);
+            progress.querySelector('.progress-text').textContent = 'Analysis ready!';
+            
             // Open the URL in a new tab
             chrome.runtime.sendMessage({ action: 'openLichessWithPGN', url: lichessURL });
+            
+            // Remove the progress indicator after a short delay
+            setTimeout(() => {
+              progress.remove();
+            }, 2000);
           } else {
-            console.log('PGN text not found');
+            updateProgress(progress, 'Failed to extract game data', true);
+            setTimeout(() => {
+              progress.remove();
+            }, 3000);
           }
-        }, 500); // Wait 500ms for the PGN content to load
+        }, 500);
       } else {
-        console.log('First tab not found');
+        updateProgress(progress, 'Failed to open share menu', true);
+        setTimeout(() => {
+          progress.remove();
+        }, 3000);
       }
-    }, 500); // Wait 500ms for the modal to appear
+    }, 500);
   } else {
-    console.log('Share button not found');
+    updateProgress(progress, 'Share button not found', true);
+    setTimeout(() => {
+      progress.remove();
+    }, 3000);
   }
 }
 
