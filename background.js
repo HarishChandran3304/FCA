@@ -88,6 +88,39 @@ function handleLichessPage(tabId) {
             // The specific selector for the engine evaluation toggle
             const EVAL_TOGGLE_SELECTOR = '#main-wrap > main > div.analyse__tools > div.ceval > div > label';
             
+            // Function to show toast notification only if user is not logged in
+            function showToastIfNotLoggedIn() {
+              // Check if user is logged in by looking for the user_tag element
+              const isLoggedIn = document.querySelector('#user_tag') !== null;
+              
+              if (isLoggedIn) {
+                console.log('User is logged in, not showing toast');
+                return; // Don't show toast if logged in
+              }
+              
+              console.log('User is not logged in, showing login toast');
+              
+              // Create toast container
+              const toast = document.createElement('div');
+              toast.className = 'chess-analysis-progress';
+              toast.innerHTML = `
+                <span class="progress-text">Login to Lichess for a better experience</span>
+                <span class="progress-spinner"></span>
+              `;
+              document.body.appendChild(toast);
+              toast.classList.add('show');
+              
+              // Remove after 5 seconds with animation
+              setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                  if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                  }
+                }, 500);
+              }, 5000);
+            }
+            
             // Try to enable the evaluation bar, with better error handling
             async function enableEval() {
               try {
@@ -104,41 +137,65 @@ function handleLichessPage(tabId) {
                       evalToggle.click();
                       console.log('Successfully clicked engine toggle');
                       
-                      // Create the toast
-                      const finalToast = document.createElement('div');
-                      finalToast.className = 'chess-analysis-progress';
-                      finalToast.innerHTML = `
-                        <span class="progress-text">Waiting for analysis</span>
-                        <span class="progress-spinner"></span>
-                      `;
-                      document.body.appendChild(finalToast);
-                      finalToast.classList.add('show');
-
-                      // Function to check if analysis is complete
-                      function checkAnalysisComplete() {
-                        const loader = document.querySelector('#acpl-chart-container-loader');
-                        if (!loader) {
-                          // Analysis is complete
-                          finalToast.classList.add('success');
-                          finalToast.querySelector('.progress-text').innerHTML = 'Analysis ready!';
-                          
-                          // Remove the toast after 2 seconds
+                      // Check if user is logged in
+                      const isLoggedIn = document.querySelector('#user_tag') !== null;
+                      
+                      if (!isLoggedIn) {
+                        // Show login toast for logged out users
+                        const loginToast = document.createElement('div');
+                        loginToast.className = 'chess-analysis-progress warning';
+                        loginToast.innerHTML = `
+                          <span class="progress-text">⚠️ Sign into Lichess for full analysis</span>
+                        `;
+                        document.body.appendChild(loginToast);
+                        loginToast.classList.add('show');
+                        
+                        // Remove after 5 seconds
+                        setTimeout(() => {
+                          loginToast.classList.remove('show');
                           setTimeout(() => {
-                            finalToast.classList.remove('show');
-                            setTimeout(() => {
-                              if (document.body.contains(finalToast)) {
-                                document.body.removeChild(finalToast);
-                              }
-                            }, 500);
-                          }, 2000);
-                          return;
-                        }
-                        // Check again in 500ms
-                        setTimeout(checkAnalysisComplete, 500);
-                      }
+                            if (document.body.contains(loginToast)) {
+                              document.body.removeChild(loginToast);
+                            }
+                          }, 500);
+                        }, 5000);
+                      } else {
+                        // Show analysis toast for logged in users
+                        const analysisToast = document.createElement('div');
+                        analysisToast.className = 'chess-analysis-progress';
+                        analysisToast.innerHTML = `
+                          <span class="progress-text">Waiting for analysis</span>
+                          <span class="progress-spinner"></span>
+                        `;
+                        document.body.appendChild(analysisToast);
+                        analysisToast.classList.add('show');
 
-                      // Start checking for analysis completion
-                      checkAnalysisComplete();
+                        // Function to check if analysis is complete
+                        function checkAnalysisComplete() {
+                          const loader = document.querySelector('#acpl-chart-container-loader');
+                          if (!loader) {
+                            // Analysis is complete
+                            analysisToast.classList.add('success');
+                            analysisToast.querySelector('.progress-text').innerHTML = '✅ Analysis ready!';
+                            
+                            // Remove the toast after 2 seconds
+                            setTimeout(() => {
+                              analysisToast.classList.remove('show');
+                              setTimeout(() => {
+                                if (document.body.contains(analysisToast)) {
+                                  document.body.removeChild(analysisToast);
+                                }
+                              }, 500);
+                            }, 2000);
+                            return;
+                          }
+                          // Check again in 500ms
+                          setTimeout(checkAnalysisComplete, 500);
+                        }
+
+                        // Start checking for analysis completion
+                        checkAnalysisComplete();
+                      }
                     } catch (clickError) {
                       console.error('Error clicking toggle:', clickError);
                     }

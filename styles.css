@@ -99,3 +99,13 @@
   background-color: #ff4444;
   color: white;
 }
+
+.chess-analysis-progress.warning {
+  background-color: #ffd700;
+  color: #000;
+  border: 1px solid #ffb700;
+}
+
+.chess-analysis-progress.warning .progress-spinner {
+  border-color: #000;
+}
