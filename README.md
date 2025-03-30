@@ -44,6 +44,14 @@ This extension works by:
 4. Opening Lichess.org with the PGN data
 5. Automatically enabling computer analysis
 
+## Limitations
+
+- Lichess has rate limits on computer analysis:
+  - ~20 games per day
+  - ~80 games per week
+- If analysis takes unusually long, it likely means you've hit the rate limit
+- You can simply create a new alt account to overcome this 
+
 ## Privacy
 
 This extension:

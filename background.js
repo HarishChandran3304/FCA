@@ -189,11 +189,44 @@ function handleLichessPage(tabId) {
                             }, 2000);
                             return;
                           }
+                          
+                          // Check if we've been waiting too long (90 seconds)
+                          if (startTime && Date.now() - startTime > 90000) {
+                            // Show rate limit warning
+                            analysisToast.classList.remove('show');
+                            setTimeout(() => {
+                              if (document.body.contains(analysisToast)) {
+                                document.body.removeChild(analysisToast);
+                              }
+                            }, 500);
+                            
+                            // Create rate limit warning toast
+                            const rateLimitToast = document.createElement('div');
+                            rateLimitToast.className = 'chess-analysis-progress warning';
+                            rateLimitToast.innerHTML = `
+                              <span class="progress-text">⚠️ Looks like you have hit the analysis limit<br>Please wait a few hours or create a new Lichess account and try again</span>
+                            `;
+                            document.body.appendChild(rateLimitToast);
+                            rateLimitToast.classList.add('show');
+                            
+                            // Remove after 8 seconds
+                            setTimeout(() => {
+                              rateLimitToast.classList.remove('show');
+                              setTimeout(() => {
+                                if (document.body.contains(rateLimitToast)) {
+                                  document.body.removeChild(rateLimitToast);
+                                }
+                              }, 500);
+                            }, 8000);
+                            return;
+                          }
+                          
                           // Check again in 500ms
                           setTimeout(checkAnalysisComplete, 500);
                         }
 
                         // Start checking for analysis completion
+                        const startTime = Date.now();
                         checkAnalysisComplete();
                       }
                     } catch (clickError) {
