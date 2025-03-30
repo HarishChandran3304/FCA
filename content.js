@@ -76,11 +76,14 @@ function addAnalyzeButton() {
   if (shareButton) {
     // Only add the button if it doesn't already exist
     if (!document.querySelector('.chess-analysis-button')) {
-      const button = document.createElement('button');
-      button.className = 'chess-analysis-button';
-      button.textContent = 'Analyze on Lichess';
-      button.addEventListener('click', triggerShareButton);
-      document.body.appendChild(button);
+      const playerComponent = document.querySelector('#board-layout-player-bottom > div.player-component.player-bottom');
+      if (playerComponent) {
+        const button = document.createElement('button');
+        button.className = 'chess-analysis-button';
+        button.textContent = 'Analyze on Lichess';
+        button.addEventListener('click', triggerShareButton);
+        playerComponent.appendChild(button);
+      }
     }
   }
 }
