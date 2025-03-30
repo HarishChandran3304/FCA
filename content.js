@@ -152,7 +152,7 @@ function triggerShareButton() {
       }
     }, 500);
   } else {
-    updateProgress(progress, 'Share button not found', true);
+    updateProgress(progress, 'Cannot analyze a game in progress', true);
     setTimeout(() => {
       progress.remove();
     }, 3000);
