@@ -26,35 +26,9 @@
   box-shadow: 0 1px 0 #2c4c0b, 0 2px 4px #2c4c0b;
 }
 
-.lichess-toast {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background-color: #80B64B;
-  color: white;
-  padding: 12px 16px;
-  border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-  z-index: 10000;
-  font-family: 'Segoe UI', 'Helvetica Neue', 'Noto Sans', Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  max-width: 320px;
-  transform: translateX(-110%);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.lichess-toast.show {
-  transform: translateX(0);
-}
-
-.lichess-toast.hide {
-  transform: translateX(-110%);
-}
-
 .chess-analysis-progress {
   position: fixed;
-  bottom: 70px;
+  bottom: 17px;
   right: 7px;
   background-color: white;
   color: #333;
@@ -69,10 +43,13 @@
   display: none;
   min-width: 200px;
   text-align: left;
+  transform: translateX(110%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .chess-analysis-progress.show {
   display: block;
+  transform: translateX(0);
 }
 
 .chess-analysis-progress .progress-text {
@@ -100,6 +77,22 @@
 .chess-analysis-progress.success {
   background-color: #80B64B;
   color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 24px;
+  min-width: 160px;
+  width: auto;
+}
+
+.chess-analysis-progress.success .progress-text {
+  display: inline-block;
+  text-align: center;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
 }
 
 .chess-analysis-progress.error {

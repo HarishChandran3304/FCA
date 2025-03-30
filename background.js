@@ -12,7 +12,7 @@ function handleLichessPage(tabId) {
     chrome.scripting.executeScript({
       target: { tabId: tabId },
       function: () => {
-        // Wait for the page to fully load
+        // Wait for the page to fully load before clicking buttons
         setTimeout(() => {
           // Click the "Request computer analysis" checkbox
           const analysisCheckbox = document.querySelector('#main-wrap > main > form > div.form-check.form-group > div > span > label');
@@ -34,7 +34,7 @@ function handleLichessPage(tabId) {
         }, 1000);  // Wait 1 second for the page to fully load
       }
     });
-  }, 500);  // Wait 0.5 second before injecting the script
+  }, 500);
   
   // After clicking the import button, we need to wait for the new page to load,
   // then show the toast notification on that page
@@ -52,7 +52,7 @@ function handleLichessPage(tabId) {
           files: ['styles.css']
         });
         
-        // Then inject the script to enable eval bar and show toast
+        // Then inject the script to enable eval bar
         chrome.scripting.executeScript({
           target: { tabId: tabId },
           function: () => {
@@ -88,49 +88,8 @@ function handleLichessPage(tabId) {
             // The specific selector for the engine evaluation toggle
             const EVAL_TOGGLE_SELECTOR = '#main-wrap > main > div.analyse__tools > div.ceval > div > label';
             
-            // Function to show toast notification only if user is not logged in
-            function showToastIfNotLoggedIn() {
-              // Check if user is logged in by looking for the user_tag element
-              const isLoggedIn = document.querySelector('#user_tag') !== null;
-              
-              if (isLoggedIn) {
-                console.log('User is logged in, not showing toast');
-                return; // Don't show toast if logged in
-              }
-              
-              console.log('User is not logged in, showing login toast');
-              
-              // Create toast container
-              const toast = document.createElement('div');
-              toast.textContent = 'FCA: Login to Lichess for a better experience';
-              toast.className = 'lichess-toast';
-              
-              // Add to the page
-              document.body.appendChild(toast);
-              
-              // Animate in (slide from left)
-              requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                  toast.classList.add('show');
-                });
-              });
-              
-              // Remove after 5 seconds with animation
-              setTimeout(() => {
-                // Slide out to the left
-                toast.classList.remove('show');
-                toast.classList.add('hide');
-                
-                setTimeout(() => {
-                  if (document.body.contains(toast)) {
-                    document.body.removeChild(toast);
-                  }
-                }, 500); // Wait for the animation to finish
-              }, 5000);
-            }
-            
             // Try to enable the evaluation bar, with better error handling
-            async function enableEvalAndShowToast() {
+            async function enableEval() {
               try {
                 console.log('Waiting for evaluation toggle to appear...');
                 const evalToggle = await waitForElement(EVAL_TOGGLE_SELECTOR, 8000);
@@ -145,22 +104,53 @@ function handleLichessPage(tabId) {
                       evalToggle.click();
                       console.log('Successfully clicked engine toggle');
                       
-                      // Wait a moment after clicking to let the UI update
-                      setTimeout(showToastIfNotLoggedIn, 800);
+                      // Create the toast
+                      const finalToast = document.createElement('div');
+                      finalToast.className = 'chess-analysis-progress';
+                      finalToast.innerHTML = `
+                        <span class="progress-text">Waiting for analysis</span>
+                        <span class="progress-spinner"></span>
+                      `;
+                      document.body.appendChild(finalToast);
+                      finalToast.classList.add('show');
+
+                      // Function to check if analysis is complete
+                      function checkAnalysisComplete() {
+                        const loader = document.querySelector('#acpl-chart-container-loader');
+                        if (!loader) {
+                          // Analysis is complete
+                          finalToast.classList.add('success');
+                          finalToast.querySelector('.progress-text').innerHTML = 'Analysis ready!';
+                          
+                          // Remove the toast after 2 seconds
+                          setTimeout(() => {
+                            finalToast.classList.remove('show');
+                            setTimeout(() => {
+                              if (document.body.contains(finalToast)) {
+                                document.body.removeChild(finalToast);
+                              }
+                            }, 500);
+                          }, 2000);
+                          return;
+                        }
+                        // Check again in 500ms
+                        setTimeout(checkAnalysisComplete, 500);
+                      }
+
+                      // Start checking for analysis completion
+                      checkAnalysisComplete();
                     } catch (clickError) {
                       console.error('Error clicking toggle:', clickError);
-                      showToastIfNotLoggedIn();
                     }
                   }, 500);
                 }
               } catch (error) {
                 console.log('Error finding engine toggle:', error.message);
-                showToastIfNotLoggedIn();
               }
             }
             
             // Start the process
-            enableEvalAndShowToast();
+            enableEval();
           }
         });
       }, 3000); // Wait 3 seconds for the page to be fully interactive
