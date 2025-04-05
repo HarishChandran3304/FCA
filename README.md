@@ -4,6 +4,15 @@
   <img src="icons/logo.png" alt="FCA Logo" width="128" height="128">
 </p>
 
+<div align="center">
+  <h3><a href="https://chess-fca.netlify.app">📱 Visit Our Website</a></h3>
+  <h3><a href="https://chromewebstore.google.com/detail/fca-free-chesscom-analysi/fnbdibibhedkicfmehhdmobliblmiimc">🚀 Install from Chrome Web Store</a></h3>
+</div>
+
+<div align="center" style="background-color: #ffd700; border: 2px solid #ffb700; border-radius: 4px; padding: 15px; margin: 20px 0; color: #000000;">
+  <strong>⚠️ Important:</strong> Remember to create an account on <a href="https://lichess.org" target="_blank">lichess.org</a> and stay signed for all the analysis features to work
+</div>
+
 ## Overview
 
 FCA (Free Chess.com Analysis) is a browser extension that enables free, one-click analysis of your Chess.com games using Lichess.org's powerful analysis engine. Get computer evaluation, move suggestions, and tactical insights without a premium subscription.
@@ -24,14 +33,14 @@ Watch how FCA works in action:
 - **Non-Intrusive UI**: No distracting elements so you can focus when you're in a game
 - **Privacy-First**: Your data and privacy are respected - [see Privacy section](#privacy) for details
 
-<div align="center" style="background-color: #ffd700; border: 2px solid #ffb700; border-radius: 4px; padding: 15px; margin: 20px 0; color: #000000;">
-  <strong>⚠️ Important:</strong> Remember to create an account on <a href="https://lichess.org" target="_blank">lichess.org</a> and stay signed for all the analysis features to work
-</div>
-
 ## Installation
 
-### Chrome Web Store
-*(Coming soon)*
+### Chrome Web Store (Recommended)
+<div align="center">
+  <a href="https://chromewebstore.google.com/detail/fca-free-chesscom-analysi/fnbdibibhedkicfmehhdmobliblmiimc" style="display: inline-block; padding: 12px 24px; background: #4285f4; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 16px;">
+    <span style="vertical-align: middle;">Install Now 🚀</span>
+  </a>
+</div>
 
 ### Manual Installation
 1. Download or clone this repository
