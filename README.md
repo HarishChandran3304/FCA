@@ -36,8 +36,8 @@ Watch how FCA works in action:
 ## Installation
 
 ### Chrome Web Store (Recommended)
-<a href="https://chromewebstore.google.com/detail/fca-free-chesscom-analysi/fnbdibibhedkicfmehhdmobliblmiimc" style="display: inline-block; padding: 12px 24px; background: #4285f4; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 16px;">
-  <span style="vertical-align: middle;">Install Now 🚀</span>
+🚀<a href="https://chromewebstore.google.com/detail/fca-free-chesscom-analysi/fnbdibibhedkicfmehhdmobliblmiimc">
+  <span style="vertical-align: middle;">Install Now</span>
 </a>
 
 ### Manual Installation
