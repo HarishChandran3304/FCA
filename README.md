@@ -10,7 +10,7 @@
 </div>
 
 <div align="center" style="background-color: #ffd700; border: 2px solid #ffb700; border-radius: 4px; padding: 15px; margin: 20px 0; color: #000000;">
-  <strong>⚠️ Important:</strong> Remember to create an account on <a href="https://lichess.org" target="_blank">lichess.org</a> and stay signed for all the analysis features to work
+  <strong>⚠️ Important:</strong> Remember to create an account on <a href="https://lichess.org" target="_blank">lichess.org</a> and stay signed in for all the analysis features to work
 </div>
 
 ## Overview
